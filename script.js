@@ -5,7 +5,12 @@ document.getElementById('generateBtn').addEventListener('click', function() {
         alert('Por favor, ingrese una cifra valida.');
         return;
     }
-    qrcode.toCanvas(canvas, data, {
+    var qrLib = window.QRCode || window.qrcode;
+    if (!qrLib) {
+        alert('La libreria de codigos QR aun no se ha completado. Por favor, recargue la pagina.');
+        return;
+    }
+    qrLib.toCanvas(canvas, data, {
         version: 1,
         errorCorrectionLevel: 'M',
         margin: 4,
@@ -17,6 +22,10 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     });
 });
 
-window.addEventListener('DOMContentLoaded', function() {
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('generateBtn').click();
+    });
+} else {
     document.getElementById('generateBtn').click();
-});
+}
