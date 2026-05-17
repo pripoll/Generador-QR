@@ -10,7 +10,7 @@ document.getElementById('generateBtn').addEventListener('click', function() {
         return;
     }
     try {
-        var qr = qrcode(1, 'M');
+        var qr = qrcode(1, 'L');
         qr.addData(data, 'Alphanumeric');
         qr.make();
         container.innerHTML = qr.createImgTag(6, 4);
