@@ -1,24 +1,29 @@
 document.getElementById('generateBtn').addEventListener('click', function() {
     var data = document.getElementById('qrData').value;
-    var container = document.getElementById('qrContainer');
+    var canvas = document.getElementById('qrCanvas');
     if (data.trim() === '') {
         alert('Por favor, ingrese una cifra valida.');
         return;
     }
-    if (typeof qrcode === 'undefined') {
+    if (typeof QRCode === 'undefined') {
         alert('La libreria externa no se ha cargado todavia. Intente refrescar la pagina.');
         return;
     }
-    try {
-        var qr = qrcode(1, 'L');
-        qr.addData(data, 'Alphanumeric');
-        qr.make();
-        container.innerHTML = qr.createImgTag(6, 4);
-    } catch (error) {
-        alert('Error al generar el codigo QR: ' + error.message);
-    }
+    QRCode.toCanvas(canvas, data, {
+        version: 1,
+        errorCorrectionLevel: 'L',
+        maskPattern: 7,
+        margin: 4,
+        scale: 6
+    }, function (error) {
+        if (error) {
+            alert('Error al generar el codigo QR: ' + error.message);
+        }
+    });
 });
 
-window.addEventListener('load', function() {
-    document.getElementById('generateBtn').click();
+window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.getElementById('generateBtn').click();
+    }, 200);
 });
