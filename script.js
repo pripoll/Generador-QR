@@ -7,19 +7,36 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     }
     var qrLib = window.QRCode || window.qrcode;
     if (!qrLib) {
-        alert('La libreria de codigos QR aun no se ha completado. Por favor, recargue la pagina.');
+        alert('La libreria externa no se ha cargado todavia. Intente refrescar la pagina.');
         return;
     }
-    qrLib.toCanvas(canvas, data, {
-        version: 1,
-        errorCorrectionLevel: 'M',
-        margin: 4,
-        scale: 6
-    }, function (error) {
-        if (error) {
-            alert('Error al generar el codigo QR. Verifique la longitud del texto.');
+    try {
+        qrLib.toCanvas(canvas, [{ data: data, mode: 'alphanumeric' }], {
+            version: 1,
+            errorCorrectionLevel: 'M',
+            margin: 4,
+            scale: 6
+        }, function (error) {
+            if (error) {
+                alert('Error al renderizar el codigo QR: ' + error.message);
+            }
+        });
+    } catch (err) {
+        try {
+            qrLib.toCanvas(canvas, data, {
+                version: 1,
+                errorCorrectionLevel: 'L',
+                margin: 4,
+                scale: 6
+            }, function (error) {
+                if (error) {
+                    alert('Error en modo alternativo: ' + error.message);
+                }
+            });
+        } catch (finalErr) {
+            alert('Error critico de capacidad: El texto es demasiado largo para la Version 1. Detalle: ' + finalErr.message);
         }
-    });
+    }
 });
 
 if (document.readyState === 'loading') {
