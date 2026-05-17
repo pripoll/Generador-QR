@@ -5,11 +5,12 @@ document.getElementById('generateBtn').addEventListener('click', function() {
         alert('Por favor, ingrese una cifra valida.');
         return;
     }
-    if (typeof QRCode === 'undefined') {
-        alert('La libreria externa no se ha cargado todavia. Intente refrescar la pagina.');
+    var qrLib = window.QRCode || window.qrcode;
+    if (!qrLib) {
+        alert('La libreria aun no se ha cargado por completo. Por favor, espere un segundo e intente presionar el boton nuevamente.');
         return;
     }
-    QRCode.toCanvas(canvas, data, {
+    qrLib.toCanvas(canvas, data, {
         version: 1,
         errorCorrectionLevel: 'L',
         maskPattern: 7,
@@ -22,8 +23,6 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     });
 });
 
-window.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-        document.getElementById('generateBtn').click();
-    }, 200);
+window.addEventListener('load', function() {
+    document.getElementById('generateBtn').click();
 });
