@@ -70,7 +70,6 @@ button:hover {
     border-radius: 4px;
     display: inline-block;
 }
-.result-container img {
+canvas {
     display: block;
-    margin: 0 auto;
 }
