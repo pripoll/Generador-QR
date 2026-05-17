@@ -5,7 +5,7 @@ document.getElementById('generateBtn').addEventListener('click', function() {
         alert('Por favor, ingrese una cifra valida.');
         return;
     }
-    QRCode.toCanvas(canvas, data, {
+    qrcode.toCanvas(canvas, data, {
         version: 1,
         errorCorrectionLevel: 'M',
         margin: 4,
